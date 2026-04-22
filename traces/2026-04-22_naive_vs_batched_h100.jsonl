@@ -1,0 +1,7 @@
+{"event": "run_start", "device": "cuda", "dtype": "fp32", "k": 10, "sizes": [512, 1024, 2048, 4096, 8192], "silicon": "NVIDIA H100 80GB HBM3", "provider": "RunPod Community Cloud", "pytorch": "2.4.1+cu124", "cuda": "12.4", "driver": "580.126.09"}
+{"event": "measurement", "n": 512, "matmul_ms": 0.034, "naive_ms": 0.974, "batched_ms": 0.138, "naive_overhead_pct": 2863.76, "batched_overhead_pct": 406.78, "batched_speedup_vs_naive": 7.0}
+{"event": "measurement", "n": 1024, "matmul_ms": 0.073, "naive_ms": 0.963, "batched_ms": 0.134, "naive_overhead_pct": 1312.34, "batched_overhead_pct": 182.37, "batched_speedup_vs_naive": 7.2}
+{"event": "measurement", "n": 2048, "matmul_ms": 0.354, "naive_ms": 0.966, "batched_ms": 0.147, "naive_overhead_pct": 272.89, "batched_overhead_pct": 41.49, "batched_speedup_vs_naive": 6.6}
+{"event": "measurement", "n": 4096, "matmul_ms": 2.672, "naive_ms": 1.482, "batched_ms": 0.215, "naive_overhead_pct": 55.45, "batched_overhead_pct": 8.04, "batched_speedup_vs_naive": 6.9}
+{"event": "measurement", "n": 8192, "matmul_ms": 21.209, "naive_ms": 3.359, "batched_ms": 0.543, "naive_overhead_pct": 15.84, "batched_overhead_pct": 2.56, "batched_speedup_vs_naive": 6.2}
+{"event": "run_end"}

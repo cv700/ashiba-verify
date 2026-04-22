@@ -91,30 +91,74 @@ assert freivalds_verify(A_mps, B_mps, C_mps, k=10)
 
 ## Overhead measurement
 
-Freivalds verification overhead drops as matrix size grows, because matmul cost scales O(n³) while Freivalds verification cost scales O(n²·k). At production-scale matrix sizes typical of transformer training (n ≥ 8192), overhead is under a few percent. At very large sizes (n ≥ 16384) overhead crosses below 1% of the matmul it verifies.
+Freivalds verification overhead drops as matrix size grows, because matmul cost scales O(n³) while Freivalds cost scales O(n²·k). At production matmul sizes (n ≥ 16384), overhead is a few percent or less. At very large sizes (n ≥ 32768), overhead is under 1% of the kernel it verifies. The curve is measured below across three silicon platforms.
 
-**Measured on Apple M5 with MPS backend, FP32, k=10 Freivalds iterations:**
+**FP32 overhead, k=10 iterations, across three silicon platforms:**
 
-| Matrix size | Matmul time | Freivalds time | Overhead |
+| n | Apple M5 (MPS) | AMD MI300X (ROCm 7.0) | NVIDIA H100 (CUDA 12.4) |
 |---|---|---|---|
-| 1024 × 1024 | 0.93 ms | 0.80 ms | 86% |
-| 2048 × 2048 | 4.97 ms | 1.23 ms | 25% |
-| 4096 × 4096 | 44.1 ms | 2.66 ms | 6.0% |
-| 8192 × 8192 | 391 ms | 8.5 ms | 2.2% |
-| **16384 × 16384** | **3610 ms** | **34.9 ms** | **0.97%** |
+| 1024 | 86% | 475% | 310% |
+| 2048 | 25% | 132% | 80% |
+| 4096 | 6.0% | 29% | 16% |
+| 8192 | 2.2% | 7.5% | 4.4% |
+| 16384 | **0.97%** | 2.0% | 1.5% |
+| 32768 | — | **0.75%** | **0.55%** |
 
-The overhead curve reflects a GPU-utilization asymmetry: large square matmuls achieve near-peak FLOP throughput, while the smaller matmuls Freivalds uses (shape n × k, where k is the iteration count) are more memory-bandwidth-limited. Batching k iterations into a single matmul (shape n × k instead of k separate matvecs) is the critical optimization — without it, overhead is 20-200× worse.
+**Reduced-precision overhead at n=16384:**
 
-**Implication for production use:** Freivalds is a viable production-scale verification mechanism for training workloads where per-kernel matrix sizes are in the thousands. For inference workloads with smaller matrix dimensions, the overhead is proportionally higher and the tradeoff depends on the latency budget.
+| dtype | Apple M5 | MI300X | H100 |
+|---|---|---|---|
+| FP32 | 0.97% | 2.0% | 1.5% |
+| FP16 | — | 8.5% | 13% |
+| BF16 | — | — | 14% |
 
-Reproducing:
+**Reduced-precision at n=32768:**
+
+| dtype | MI300X | H100 |
+|---|---|---|
+| FP32 | 0.75% | 0.55% |
+| FP16 | — | 3.9% |
+| BF16 | — | 4.4% |
+
+### Why the curve has the shape it does
+
+The overhead reflects a **GPU-utilization asymmetry**: large square matmuls achieve near-peak FLOP throughput on modern accelerators, while the smaller matmuls Freivalds uses (shape n × k, where k=10) are more memory-bandwidth-limited and hit lower FLOP utilization. Faster silicon widens this gap — an H100 or MI300X runs the verified matmul far closer to its theoretical peak than a Freivalds-shaped matmul, so the relative overhead is *higher* on server GPUs than on Apple Silicon at the same matrix size. The crossover to sub-1% overhead accordingly moves to larger matrices on faster silicon.
+
+Reduced precision (FP16/BF16) increases overhead ratios because server tensor cores accelerate the verified matmul more than they accelerate the bandwidth-bound Freivalds matmuls. This is expected and will remain until Freivalds is refactored to batch across kernels (v0.2+ work).
+
+### The batched-matmul optimization is load-bearing
+
+The Freivalds algorithm naturally expresses as "sample k random vectors, do three matvecs each." Implementing it that way is catastrophically slow on GPUs: 30 sequential kernel launches per verification, each kernel memory-bandwidth-limited, no fusion. Sampling k random vectors *as a matrix* and doing three matmuls instead of 3k matvecs reduces the runtime by roughly an order of magnitude on every platform measured:
+
+| Platform | Naive-vs-batched speedup (n=2048 FP32) |
+|---|---|
+| Apple M5 (MPS) | 12.3× |
+| AMD MI300X | 4.6× |
+| NVIDIA H100 | 6.6× |
+
+Without this optimization, overhead at n=2048 is 200-500% on all three platforms — i.e., verification would cost more than re-running the kernel itself. Raw traces in `traces/2026-04-22_naive_vs_batched_*.jsonl`.
+
+### Implication for production use
+
+Freivalds is a viable continuous-verification mechanism for training workloads where per-kernel matrix sizes are in the thousands to tens of thousands. For large-hidden-dim transformer training (hidden dim 4096-16384, typical), overhead is 2-15% depending on silicon and precision. At inference-time matrix dimensions (typically smaller, more latency-sensitive), the tradeoff is workload-specific and the sensitivity floor (see below) becomes the more important constraint.
+
+### Reproducing
 
 ```bash
-python examples/benchmark_overhead.py --device mps --size 16384 --dtype fp32
-python examples/benchmark_overhead.py --device cuda --size 16384 --dtype fp16  # (on CUDA hardware)
+# on your own hardware:
+python examples/benchmark_overhead.py --device mps --size 16384 --dtype fp32   # Apple Silicon
+python examples/benchmark_overhead.py --device cuda --size 16384 --dtype fp32  # NVIDIA or AMD (ROCm)
+
+# full multi-size sweep:
+for n in 1024 2048 4096 8192 16384 32768; do
+  python examples/benchmark_overhead.py --device cuda --size $n --dtype fp32
+done
+
+# side-by-side naive vs batched comparison:
+python examples/compare_naive_vs_batched.py --device cuda --dtype fp32 --sizes 512,1024,2048,4096,8192
 ```
 
-Cross-platform benchmarks (NVIDIA H100, AMD MI300X) pending; see `TRACES.md`.
+Raw JSONL trace data for each platform is in `traces/`.
 
 ## What this is NOT
 

@@ -1,0 +1,7 @@
+{"event": "run_start", "device": "cuda", "dtype": "fp32", "k": 10, "sizes": [512, 1024, 2048, 4096, 8192], "silicon": "AMD Instinct MI300X (gfx942)", "provider": "DigitalOcean AMD Developer Cloud ATL1", "pytorch": "2.9.0.dev20250821+rocm7.0.0.git125803b7"}
+{"event": "measurement", "n": 512, "matmul_ms": 0.045, "naive_ms": 0.992, "batched_ms": 0.184, "naive_overhead_pct": 2220.66, "batched_overhead_pct": 412.4, "batched_speedup_vs_naive": 5.4}
+{"event": "measurement", "n": 1024, "matmul_ms": 0.054, "naive_ms": 0.984, "batched_ms": 0.333, "naive_overhead_pct": 1829.81, "batched_overhead_pct": 619.79, "batched_speedup_vs_naive": 3.0}
+{"event": "measurement", "n": 2048, "matmul_ms": 0.215, "naive_ms": 0.98, "batched_ms": 0.214, "naive_overhead_pct": 454.94, "batched_overhead_pct": 99.34, "batched_speedup_vs_naive": 4.6}
+{"event": "measurement", "n": 4096, "matmul_ms": 1.29, "naive_ms": 1.151, "batched_ms": 0.188, "naive_overhead_pct": 89.18, "batched_overhead_pct": 14.6, "batched_speedup_vs_naive": 6.1}
+{"event": "measurement", "n": 8192, "matmul_ms": 9.461, "naive_ms": 3.392, "batched_ms": 0.395, "naive_overhead_pct": 35.85, "batched_overhead_pct": 4.17, "batched_speedup_vs_naive": 8.6}
+{"event": "run_end"}
