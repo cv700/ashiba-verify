@@ -1,0 +1,7 @@
+{"event": "run_start", "device": "mps", "dtype": "fp32", "k": 10, "sizes": [512, 1024, 2048, 4096, 8192]}
+{"event": "measurement", "n": 512, "matmul_ms": 0.767, "naive_ms": 5.567, "batched_ms": 0.325, "naive_overhead_pct": 725.31, "batched_overhead_pct": 42.35, "batched_speedup_vs_naive": 17.1}
+{"event": "measurement", "n": 1024, "matmul_ms": 1.855, "naive_ms": 6.332, "batched_ms": 0.425, "naive_overhead_pct": 341.42, "batched_overhead_pct": 22.89, "batched_speedup_vs_naive": 14.9}
+{"event": "measurement", "n": 2048, "matmul_ms": 4.956, "naive_ms": 10.248, "batched_ms": 0.831, "naive_overhead_pct": 206.8, "batched_overhead_pct": 16.78, "batched_speedup_vs_naive": 12.3}
+{"event": "measurement", "n": 4096, "matmul_ms": 44.207, "naive_ms": 25.477, "batched_ms": 2.237, "naive_overhead_pct": 57.63, "batched_overhead_pct": 5.06, "batched_speedup_vs_naive": 11.4}
+{"event": "measurement", "n": 8192, "matmul_ms": 392.147, "naive_ms": 83.541, "batched_ms": 7.895, "naive_overhead_pct": 21.3, "batched_overhead_pct": 2.01, "batched_speedup_vs_naive": 10.6}
+{"event": "run_end"}
