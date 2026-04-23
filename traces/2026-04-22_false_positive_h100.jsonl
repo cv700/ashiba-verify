@@ -1,0 +1,1 @@
+{"n": 4096, "k": 40, "n_trials": 500, "false_positives": 0, "device": "NVIDIA H100 80GB HBM3", "dtype": "fp32"}

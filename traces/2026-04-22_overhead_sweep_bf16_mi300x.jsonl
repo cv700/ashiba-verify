@@ -1,0 +1,8 @@
+{"event": "run_start", "device": "cuda", "dtype": "bf16", "k": 10, "sizes": [1024, 2048, 4096, 8192, 16384, 32768], "pytorch": "2.9.0.dev20250821+rocm7.0.0.git125803b7", "silicon": "AMD Instinct MI300X (gfx942)", "provider": "DigitalOcean AMD Developer Cloud ATL1", "cuda": "", "device_name": ""}
+{"event": "measurement", "n": 1024, "matmul_ms": 0.0398, "freivalds_ms": 0.1653, "overhead_pct": 415.129, "k": 10, "dtype": "bf16"}
+{"event": "measurement", "n": 2048, "matmul_ms": 0.0687, "freivalds_ms": 0.1733, "overhead_pct": 252.273, "k": 10, "dtype": "bf16"}
+{"event": "measurement", "n": 4096, "matmul_ms": 0.2559, "freivalds_ms": 0.1636, "overhead_pct": 63.955, "k": 10, "dtype": "bf16"}
+{"event": "measurement", "n": 8192, "matmul_ms": 1.7852, "freivalds_ms": 0.3288, "overhead_pct": 18.42, "k": 10, "dtype": "bf16"}
+{"event": "measurement", "n": 16384, "matmul_ms": 13.5419, "freivalds_ms": 0.6012, "overhead_pct": 4.439, "k": 10, "dtype": "bf16"}
+{"event": "measurement", "n": 32768, "matmul_ms": 113.657, "freivalds_ms": 1.7586, "overhead_pct": 1.547, "k": 10, "dtype": "bf16"}
+{"event": "run_end"}

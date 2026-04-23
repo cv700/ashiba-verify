@@ -1,0 +1,4 @@
+{"event": "run_start", "device": "cuda", "dtype": "fp32", "k": 10, "sizes": [16384, 32768]}
+{"event": "measurement", "n": 16384, "matmul_ms": 161.397, "naive_ms": 11.505, "batched_ms": 1.744, "naive_overhead_pct": 7.13, "batched_overhead_pct": 1.08, "batched_speedup_vs_naive": 6.6}
+{"event": "measurement", "n": 32768, "matmul_ms": 1319.937, "naive_ms": 42.766, "batched_ms": 5.863, "naive_overhead_pct": 3.24, "batched_overhead_pct": 0.44, "batched_speedup_vs_naive": 7.3}
+{"event": "run_end"}
