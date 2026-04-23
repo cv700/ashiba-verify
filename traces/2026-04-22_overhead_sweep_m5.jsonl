@@ -1,0 +1,7 @@
+{"event": "run_start", "device": "mps", "dtype": "fp32", "k": 10, "sizes": [1024, 2048, 4096, 8192, 16384], "pytorch": "2.11.0", "silicon": "Apple M5 (MPS)", "provider": "local MacBook"}
+{"event": "measurement", "n": 1024, "matmul_ms": 1.8062, "freivalds_ms": 0.5014, "overhead_pct": 27.759, "k": 10, "dtype": "fp32"}
+{"event": "measurement", "n": 2048, "matmul_ms": 5.1806, "freivalds_ms": 0.862, "overhead_pct": 16.64, "k": 10, "dtype": "fp32"}
+{"event": "measurement", "n": 4096, "matmul_ms": 47.867, "freivalds_ms": 2.5188, "overhead_pct": 5.262, "k": 10, "dtype": "fp32"}
+{"event": "measurement", "n": 8192, "matmul_ms": 423.6557, "freivalds_ms": 8.89, "overhead_pct": 2.098, "k": 10, "dtype": "fp32"}
+{"event": "measurement", "n": 16384, "matmul_ms": 3981.637, "freivalds_ms": 36.5943, "overhead_pct": 0.919, "k": 10, "dtype": "fp32"}
+{"event": "run_end"}
