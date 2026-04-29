@@ -1,10 +1,20 @@
 # ashiba-verify
 
-**A probabilistic GEMM verifier for ML kernels across silicon.**
+**Reference verifiers for ML kernel contract classes across silicon.**
 
-Implements Freivalds' algorithm (1979) for verifying matrix multiplication `C ≈ A @ B` at `O(n²)` cost vs `O(n³)` to recompute, with probability of false positive `2⁻ᵏ` after `k` iterations. Runs on PyTorch CUDA, Apple Silicon MPS, and ROCm backends.
+Point-of-use test protocols for contract classes defined in *Kernel Contracts: A Specification Language for ML Kernel Correctness Across Heterogeneous Silicon* (Veit, 2026; [arxiv.org/abs/2604.22032](https://arxiv.org/abs/2604.22032)).
 
-Part of the kernel-contracts research program — see `https://ashibaresearch.com` and the accompanying paper at `https://arxiv.org/abs/YYMM.NNNNN`.
+Currently implemented (v0.5.0):
+
+- **C-PRC-01** — Precision Preservation Under Declared Accumulator (Freivalds' 1979 probabilistic verification, batched, sub-1% overhead)
+- **C-ORD-01** — Reduction-Order Tolerance Bound (FPNA bound across schedules)
+- **C-CMP-03** — Shape-Polymorphism Preservation (held-out-shape sweep)
+- **C-EXC-01** — NaN/Inf Propagation Semantics (IEEE 754 / MASK / RAISE policies)
+- **C-EXC-02** — Out-of-Bounds Access Semantics (RAISE / CLAMP / ZERO / UNDEFINED policies)
+
+Each module is a single-shot, point-of-use verifier — invoke once against a candidate kernel for a pass/fail verdict. Each ships with three-state calibration kernels (baseline / bad / conforming) for testing the verifier itself.
+
+Runs on PyTorch CUDA, Apple Silicon MPS, ROCm, and CPU. Part of the kernel-contracts research program — see [ashibaresearch.com](https://ashibaresearch.com).
 
 ## What this is
 

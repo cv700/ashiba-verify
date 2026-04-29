@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ashiba-verify"
-version = "0.1.0"
-description = "Probabilistic GEMM verification for ML kernels across silicon"
+version = "0.5.0"
+description = "Reference verifiers for ML kernel contract classes across silicon"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
@@ -40,7 +40,7 @@ dev = [
 [project.urls]
 Homepage = "https://ashibaresearch.com"
 Repository = "https://github.com/cv700/ashiba-verify"
-Paper = "https://arxiv.org/abs/YYMM.NNNNN"
+Paper = "https://arxiv.org/abs/2604.22032"
 
 [tool.setuptools.packages.find]
 where = ["."]
