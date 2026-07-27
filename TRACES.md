@@ -1,10 +1,10 @@
 # Traces — Rolling Engineering Log
 
-**Convention:** append-only. New entries at the bottom. Each entry dated, self-contained, short (200-500 words typical for routine entries; longer for tradeoff decisions). See `../03_readings/` in the parent project for strategic-level traces; this file is for code-level bugs, tradeoffs, and decisions specific to `ashiba-verify`.
+**Convention:** append-only. New entries at the bottom. Each entry dated, self-contained, short (200-500 words typical for routine entries; longer for tradeoff decisions). This file is for code-level bugs, tradeoffs, and decisions specific to `ashiba-verify`.
 
 **What goes here:** bugs that took >30 min, design tradeoffs with multiple valid resolutions, decisions-not-to-fix with reasoning, version-incompatibility calls affecting downstream users. Not: typos, one-line fixes, or anything resolved by reading the docs.
 
-**What doesn't go here:** strategic questions about the framework, patent decisions, outreach plans, paper positioning. Those live in `../03_readings/`.
+**What doesn't go here:** anything that is not a code-level decision in this repo.
 
 ---
 
